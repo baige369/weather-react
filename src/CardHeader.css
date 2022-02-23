@@ -1,0 +1,9 @@
+.CardHeader {
+  font-family: "Nanum Pen Script", cursive;
+  font-size: 150%;
+  border-bottom: none;
+  font-weight: bold;
+  text-shadow: 2px 2px #e7e9eb;
+  padding: 8px 25px;
+  background-color: transparent;
+}

@@ -1,0 +1,23 @@
+.date,
+.description {
+  font-size: 15px;
+}
+
+.next-days {
+  text-align: center;
+}
+
+.secondary-image {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.temperature {
+  font-weight: bold;
+  font-size: 15px;
+}
