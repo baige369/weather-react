@@ -9,7 +9,7 @@ export default function Forecast() {
           <div className="date">Sat 18th</div>
           <img
             className="secondary-image"
-            src={require("./images/01d.jpg")}
+            src={require("./images/sunny.jpg")}
             alt="sunny"
           />
           <div className="temperature">21°C|14°C</div>
