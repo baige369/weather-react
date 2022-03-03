@@ -1,25 +1,7 @@
-.ButtonDate .button-date {
-  border-radius: 50%;
-  font-weight: bold;
-  position: relative;
-  left: 3px;
-  bottom: 15px;
-  border-color: #6c757d;
-  border: solid;
-  padding: 14px;
-  font-size: 14px;
-  background: white;
-  font-weight: bold;
-}
-
 .CardBody {
   font-family: "Fira Sans", sans-serif;
   padding-top: 15px;
   padding: 8px 25px;
-}
-
-.ButtonDate .date {
-  font-size: 15px;
 }
 
 .Description {

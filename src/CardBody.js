@@ -2,37 +2,41 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./CardBody.css";
 import Forecast from "./Forecast";
+import FormattedDate from "./FormattedDate";
 
 export default function CardBody(props) {
-  const [city, setCity] = useState(null);
-  const [weather, setWeather] = useState({});
-  const [loaded, setLoaded] = useState(false);
+  const [city, setCity] = useState(props.defaultCity);
+  const [weather, setWeather] = useState({ ready: false });
 
   function showWeather(response) {
-    setLoaded(true);
     setWeather({
+      ready: true,
       city: response.data.name,
       temp: response.data.main.temp,
       description: response.data.weather[0].description,
       humidity: response.data.main.humidity,
       wind: response.data.wind.speed,
       feel: response.data.main.feels_like,
+      date: new Date(response.data.dt * 1000),
     });
   }
-
-  function handleSubmit(event) {
-    event.preventDefault();
+  function search() {
     let apiKey = "a2dda52dce059eb8a14e95aaa0db6ab7";
     let units = "metric";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
     axios.get(apiUrl).then(showWeather);
   }
 
+  function handleSubmit(event) {
+    event.preventDefault();
+    search();
+  }
+
   function updateCity(event) {
     setCity(event.target.value);
   }
 
-  if (loaded) {
+  if (weather.ready) {
     return (
       <div className="CardBody">
         <div className="row">
@@ -80,17 +84,7 @@ export default function CardBody(props) {
           </div>
 
           <div className="col-3">
-            <div className="ButtonDate">
-              <div className="date">
-                <button className="button-date">
-                  <span>Friday</span>
-                  <br />
-                  <span>17/09/2021</span>
-                  <br />
-                  <span>18:00</span>
-                </button>
-              </div>
-            </div>
+            <FormattedDate date={weather.date} />
           </div>
 
           <div className="row">
@@ -142,10 +136,7 @@ export default function CardBody(props) {
       </div>
     );
   } else {
-    let apiKey = "a2dda52dce059eb8a14e95aaa0db6ab7";
-    let units = "metric";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${props.defaultCity}&appid=${apiKey}&units=${units}`;
-    axios.get(apiUrl).then(showWeather);
+    search();
     return "Loading...";
   }
 }
