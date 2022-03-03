@@ -8,7 +8,7 @@ export default function Card() {
     <div className="Card">
       <div className="card border-dark mb-3">
         <CardHeader />
-        <CardBody />
+        <CardBody defaultCity="London" />
       </div>
     </div>
   );
