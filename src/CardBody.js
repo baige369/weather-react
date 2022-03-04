@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./CardBody.css";
-import Forecast from "./Forecast";
 import FormattedDate from "./FormattedDate";
+import Forecast from "./Forecast";
 
 export default function CardBody(props) {
   const [city, setCity] = useState(props.defaultCity);
@@ -18,6 +18,7 @@ export default function CardBody(props) {
       wind: response.data.wind.speed,
       feel: response.data.main.feels_like,
       date: new Date(response.data.dt * 1000),
+      icon: response.data.weather[0].icon,
     });
   }
   function search() {
@@ -58,7 +59,6 @@ export default function CardBody(props) {
                 </button>
               </form>
             </div>
-
             <div className="Title">
               <div className="text-nowrap">
                 <h1>Weather forecast for {weather.city}</h1>
@@ -86,45 +86,45 @@ export default function CardBody(props) {
           <div className="col-3">
             <FormattedDate date={weather.date} />
           </div>
+        </div>
 
-          <div className="row">
-            <div className="col">
-              <div className="Image">
-                <div className="col image">
-                  <img
-                    className="primary-image"
-                    src={require(`./images/01d.jpg`)}
-                    alt={weather.description}
-                    width="60%"
-                  />
-                </div>
+        <div className="row">
+          <div className="col">
+            <div className="Image">
+              <div className="col image">
+                <img
+                  className="primary-image"
+                  src={require(`./images/${weather.icon}.jpg`)}
+                  alt={weather.description}
+                  width="60%"
+                />
               </div>
             </div>
+          </div>
 
-            <div className="col">
-              <div className="Description">
-                <h2>{Math.round(weather.temp)}°C</h2>
-                <h3 className="text-capitalize">{weather.description}</h3>
-              </div>
+          <div className="col">
+            <div className="Description">
+              <h2>{Math.round(weather.temp)}°C</h2>
+              <h3 className="text-capitalize">{weather.description}</h3>
             </div>
+          </div>
 
-            <div className="col">
-              <div className="OtherMeasures col other-measures">
-                <ul>
-                  <li>
-                    <strong>Humidity: </strong>
-                    <span>{Math.round(weather.humidity)}</span>%
-                  </li>
-                  <li>
-                    <strong>Wind: </strong>
-                    <span>{Math.round(weather.wind)}</span> km/h
-                  </li>
-                  <li>
-                    <strong>Feels like: </strong>
-                    <span>{Math.round(weather.feel)}</span>°C
-                  </li>
-                </ul>
-              </div>
+          <div className="col">
+            <div className="OtherMeasures col other-measures">
+              <ul>
+                <li>
+                  <strong>Humidity: </strong>
+                  <span>{Math.round(weather.humidity)}</span>%
+                </li>
+                <li>
+                  <strong>Wind: </strong>
+                  <span>{Math.round(weather.wind)}</span> km/h
+                </li>
+                <li>
+                  <strong>Feels like: </strong>
+                  <span>{Math.round(weather.feel)}</span>°C
+                </li>
+              </ul>
             </div>
           </div>
 
