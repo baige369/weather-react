@@ -63,13 +63,13 @@ h3 {
   font-weight: bolder;
 }
 
+#submit,
+#find-me {
+  margin: 0 4px;
+}
+
 .TempButtons .Celsius-button,
 .Farenheit-button {
   position: relative;
   right: 30px;
-}
-
-#submit,
-#find-me {
-  margin: 0 4px;
 }

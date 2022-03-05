@@ -7,16 +7,17 @@ import Forecast from "./Forecast";
 export default function CardBody(props) {
   const [city, setCity] = useState(props.defaultCity);
   const [weather, setWeather] = useState({ ready: false });
+  const [unit, setUnit] = useState("celsius");
 
   function showWeather(response) {
     setWeather({
       ready: true,
       city: response.data.name,
-      temp: response.data.main.temp,
+      tempCelsius: response.data.main.temp,
       description: response.data.weather[0].description,
       humidity: response.data.main.humidity,
       wind: response.data.wind.speed,
-      feel: response.data.main.feels_like,
+      feelCelsius: response.data.main.feels_like,
       date: new Date(response.data.dt * 1000),
       icon: response.data.weather[0].icon,
     });
@@ -35,6 +36,27 @@ export default function CardBody(props) {
 
   function updateCity(event) {
     setCity(event.target.value);
+  }
+
+  function changeTempToCelsius(event) {
+    event.preventDefault();
+    setUnit("celsius");
+  }
+
+  function changeTempToFahrenheit(event) {
+    event.preventDefault();
+    setUnit("fahrenheit");
+  }
+
+  let temperature = Math.round(weather.tempCelsius) + "°C";
+  let feel = Math.round(weather.feelCelsius) + "°C";
+
+  if (unit === "celsius") {
+    temperature = Math.round(weather.tempCelsius) + "°C";
+    feel = Math.round(weather.feelCelsius) + "°C";
+  } else {
+    temperature = Math.round((weather.tempCelsius * 9) / 5 + 32) + "°F";
+    feel = Math.round((weather.feelCelsius * 9) / 5 + 32) + "°F";
   }
 
   if (weather.ready) {
@@ -73,10 +95,18 @@ export default function CardBody(props) {
                 role="group"
                 aria-label="Basic example"
               >
-                <button type="button" className="btn btn-outline-secondary">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={changeTempToCelsius}
+                >
                   °C
                 </button>
-                <button type="button" className="btn btn-outline-secondary">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary"
+                  onClick={changeTempToFahrenheit}
+                >
                   °F
                 </button>
               </div>
@@ -104,7 +134,7 @@ export default function CardBody(props) {
 
           <div className="col">
             <div className="Description">
-              <h2>{Math.round(weather.temp)}°C</h2>
+              <h2>{temperature}</h2>
               <h3 className="text-capitalize">{weather.description}</h3>
             </div>
           </div>
@@ -122,16 +152,15 @@ export default function CardBody(props) {
                 </li>
                 <li>
                   <strong>Feels like: </strong>
-                  <span>{Math.round(weather.feel)}</span>°C
+                  <span>{feel}</span>
                 </li>
               </ul>
             </div>
           </div>
-
-          <hr />
-          <div className="Forecast">
-            <Forecast />
-          </div>
+        </div>
+        <hr />
+        <div className="Forecast">
+          <Forecast />
         </div>
       </div>
     );
