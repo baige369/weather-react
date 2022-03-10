@@ -1,61 +1,50 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import ForecastDay from "./ForecastDay";
 import "./Forecast.css";
 
-export default function Forecast() {
-  return (
-    <div className="Forecast">
-      <div className="row">
-        <div className="col next-days">
-          <div className="date">Sat 18th</div>
-          <img
-            className="secondary-image"
-            src={require("./images/sunny.jpg")}
-            alt="sunny"
-          />
-          <div className="temperature">21°C|14°C</div>
-          <div className="description">Sunny</div>
-        </div>
-        <div className="col next-days">
-          <div className="date">Sun 19th</div>
-          <img
-            className="secondary-image"
-            src={require("./images/partly-cloudy.jpg")}
-            alt="partly-cloudy"
-          />
-          <div className="temperature">21°C|14°C</div>
-          <div className="description">Partly cloudy</div>
-        </div>
-        <div className="col next-days">
-          <div className="date">Mon 20th</div>
-          <img
-            className="secondary-image"
-            src={require("./images/light-rain.jpg")}
-            alt="light-rain"
-          />
-          <div className="temperature">21°C|14°C</div>
-          <div className="description">Light rain</div>
-        </div>
-        <div className="col next-days">
-          <div className="date">Tue 21th</div>
-          <img
-            className="secondary-image"
-            src={require("./images/sunny.jpg")}
-            alt="sunny"
-          />
-          <div className="temperature">21°C|14°C</div>
-          <div className="description">Sunny</div>
-        </div>
-        <div className="col next-days">
-          <div className="date">Wed 22th</div>
-          <img
-            className="secondary-image"
-            src={require("./images/sunny.jpg")}
-            alt="sunny"
-          />
-          <div className="temperature">21°C|14°C</div>
-          <div className="description">Sunny</div>
+export default function Forecast(props) {
+  let [loaded, setLoaded] = useState(false);
+  let [forecast, setForecast] = useState(null);
+
+  useEffect(() => {
+    setLoaded(false);
+  }, [props.coordinates]);
+
+  function handleResponse(response) {
+    setForecast(response.data.daily);
+    setLoaded(true);
+  }
+
+  function load() {
+    const apiKey = "a2dda52dce059eb8a14e95aaa0db6ab7";
+    let longitude = props.coordinates.lon;
+    let latitude = props.coordinates.lat;
+    let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`;
+
+    axios.get(apiUrl).then(handleResponse);
+  }
+
+  if (loaded) {
+    return (
+      <div className="Forecast">
+        <div className="row">
+          {forecast.map(function (dailyForecast, index) {
+            if (index !== 0 && index < 6) {
+              return (
+                <div className="col next-days" key={index}>
+                  <ForecastDay data={dailyForecast} />
+                </div>
+              );
+            } else {
+              return null;
+            }
+          })}
         </div>
       </div>
-    </div>
-  );
+    );
+  } else {
+    load();
+    return null;
+  }
 }

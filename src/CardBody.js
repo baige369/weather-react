@@ -12,6 +12,7 @@ export default function CardBody(props) {
   function showWeather(response) {
     setWeather({
       ready: true,
+      coordinates: response.data.coord,
       city: response.data.name,
       tempCelsius: response.data.main.temp,
       description: response.data.weather[0].description,
@@ -23,7 +24,7 @@ export default function CardBody(props) {
     });
   }
   function search() {
-    let apiKey = "a2dda52dce059eb8a14e95aaa0db6ab7";
+    const apiKey = "a2dda52dce059eb8a14e95aaa0db6ab7";
     let units = "metric";
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
     axios.get(apiUrl).then(showWeather);
@@ -75,9 +76,6 @@ export default function CardBody(props) {
                 />
                 <button type="submit">
                   <i className="fa fa-search"></i>
-                </button>
-                <button>
-                  <i className="fas fa-map-marker-alt"></i>
                 </button>
               </form>
             </div>
@@ -160,7 +158,7 @@ export default function CardBody(props) {
         </div>
         <hr />
         <div className="Forecast">
-          <Forecast />
+          <Forecast coordinates={weather.coordinates} />
         </div>
       </div>
     );
